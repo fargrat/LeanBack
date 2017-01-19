@@ -28,7 +28,6 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
 				// 2. new tab is not the current tab
 				// 3. has not already been watched
 			if(checkURL(tabs[i].url) && tabs[i].id != currentTabId && !contains(tabs[i].id)) {
-				alert('found ' + currentTabId + ' and ' + tabs[i].id);
 				// Update new current tab
 				currentTabId = tabs[i].id;
 
