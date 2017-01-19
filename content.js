@@ -1,14 +1,17 @@
-document.body.style.backgroundColor = 'white';
+// Get video player
 var video = document.getElementsByTagName("video")[0];
 
+// Wait for video to end
 video.addEventListener('ended', function(e) {
-	chrome.runtime.sendMessage("test", function(response) { });
+	// Notify event page
+	chrome.runtime.sendMessage("video_ended", function(response) { });
 });
 
+// Wait for 
 chrome.runtime.onMessage.addListener(function(message, sender, response) {
-		document.body.style.backgroundColor = 'pink';
-	var video = document.getElementsByTagName("video")[0];
+	// Check if there is a video player
 	if (video) {
+		// Start video on new tab
 		video.play();
       }
 }); 
