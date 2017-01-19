@@ -10,9 +10,11 @@ var watchedIds = [];
 
 // Listen to tab change event
 chrome.tabs.onActivated.addListener(function(event) { 
-    chrome.tabs.get(evt.tabId, function(tab) { 
+    chrome.tabs.get(event.tabId, function(tab) { 
     	// Set currentTabId to active tab
     	currentTabId = tab.id;
+
+    	alert('currentTab: ' + currentTabId);
     }); 
 }); 
 
@@ -28,6 +30,8 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
 				// 2. new tab is not the current tab
 				// 3. has not already been watched
 			if(checkURL(tabs[i].url) && tabs[i].id != currentTabId && !contains(tabs[i].id)) {
+				alert(currentTabId + ' : ' + tabs[i].id);
+
 				// Update new current tab
 				currentTabId = tabs[i].id;
 
