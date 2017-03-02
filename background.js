@@ -12,29 +12,22 @@ var watchedIds = [];
 chrome.tabs.onActivated.addListener(function(event) { 
     chrome.tabs.get(event.tabId, function(tab) { 
     	// Set currentTabId to active tab
-    	currentTabId = tab.id;
-
-    	alert('currentTab: ' + currentTabId);
+    	currentTabId = tab;
     }); 
 }); 
 
 // Listen to video ended event from content script
 chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
-	// Add current video to watched list
-	watchedIds.push(currentTabId);
-
 	chrome.tabs.query({currentWindow: true}, function(tabs) {
+		watchedIds.push(currentTabId.id);
+		console.log(currentTabId.title + ' : auf Liste :' + currentTabId.id);
+
 		for(var i = 0; i < tabs.length; i++) { // iterate through all tabs
 			// Check if tab is
 				// 1. a Youtube Tab
 				// 2. new tab is not the current tab
 				// 3. has not already been watched
-			if(checkURL(tabs[i].url) && tabs[i].id != currentTabId && !contains(tabs[i].id)) {
-				alert(currentTabId + ' : ' + tabs[i].id);
-
-				// Update new current tab
-				currentTabId = tabs[i].id;
-
+			if(checkURL(tabs[i].url) && !contains(tabs[i].id)) {
 				// Switch tab
 				chrome.tabs.update(tabs[i].id, {highlighted : true});
 
@@ -43,6 +36,10 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
 				return;
 			}
 		}
+
+		watchedIds.length = 0;
+		console.log('Liste voll - Lösche');
+
 	});
 });
 
